@@ -2,6 +2,7 @@ import { IMealForm } from '../../types';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import * as React from 'react';
+import ButtonSpinner from '../UI/ButtonSpinner/ButtonSpinner.tsx';
 
 
 const initialForm = {
@@ -13,9 +14,10 @@ const initialForm = {
 interface Props {
   mealToEdit?: IMealForm;
   submitForm: (meal: IMealForm) => void;
+  isLoading?: boolean;
 }
 
-const MealForm: React.FC<Props> = ({mealToEdit, submitForm}) => {
+const MealForm: React.FC<Props> = ({mealToEdit, submitForm, isLoading = false}) => {
   const [form, setForm] = useState<IMealForm>({...initialForm});
   const navigate = useNavigate();
 
@@ -97,8 +99,9 @@ const MealForm: React.FC<Props> = ({mealToEdit, submitForm}) => {
         />
       </div>
 
-      <button type="submit" className="btn btn-primary">
-        {mealToEdit ? 'Edit meal' : 'Add meal'}
+      <button disabled={isLoading} type="submit" className="btn btn-primary d-flex align-items-center">
+        <span className="me-2">{mealToEdit ? 'Edit meal' : 'Add meal'}</span>
+        {isLoading ? <ButtonSpinner/> : null}
       </button>
     </form>
   );

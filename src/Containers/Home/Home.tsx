@@ -2,10 +2,12 @@ import { useCallback, useEffect, useState } from 'react';
 import { IMeal, IMealApi } from '../../types';
 import axiosApi from '../../axiosApi.ts';
 import { NavLink } from 'react-router-dom';
+import ButtonSpinner from '../../Components/UI/ButtonSpinner/ButtonSpinner.tsx';
 
 
 const Home = () => {
   const [meals, setMeals] = useState<IMeal[]>([]);
+  const [loadingState, setLoadingState] = useState<{[key: string]: boolean}>({});
 
   const fetchData = useCallback(async() => {
     const response: {data: IMealApi} = await axiosApi<IMealApi>('meal.json');
@@ -28,11 +30,14 @@ const Home = () => {
   const deleteMeal = useCallback(async(mealId: string) => {
     try {
       if (window.confirm('Do you want to remove this meal?')) {
+        setLoadingState(prev => ({...prev, [mealId]: true}));
         await axiosApi.delete(`meal/${mealId}.json`);
         await fetchData();
+        setLoadingState(prev => ({...prev, [mealId]: false}));
       }
     } catch (error) {
       console.error(error);
+      setLoadingState(prev => ({...prev, [mealId]: false}));
     }
   }, [fetchData]);
 
@@ -57,9 +62,20 @@ const Home = () => {
                 </div>
                 <div>
                   <NavLink to={`/editMeal/${meal.id}`}>
-                    <button className="btn btn-sm btn-outline-primary ">Edit</button>
+                    <button className="btn btn-sm btn-outline-success"
+                            disabled={loadingState[meal.id]}
+                    >
+                      Edit
+                      {loadingState[meal.id] ? <ButtonSpinner /> : null}
+                    </button>
                   </NavLink>
-                  <button className="btn btn-sm btn-outline-danger m-2" onClick={() => deleteMeal(meal.id)}>Delete</button>
+                  <button className="btn btn-sm btn-outline-danger m-2"
+                          onClick={() => deleteMeal(meal.id)}
+                          disabled={loadingState[meal.id]}
+                  >
+                    Delete
+                    {loadingState[meal.id] ? <ButtonSpinner /> : null}
+                  </button>
                 </div>
               </li>
             ))}
