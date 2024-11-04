@@ -7,7 +7,9 @@ const NavBar = () => {
       <nav className="navbar bg-primary-subtle">
         <div className="container">
           <div className="row justify-content-between align-items-center">
-            <span className="navbar-brand mb-0 h1 text-primary-emphasis fs-2">Calories tracker</span>
+            <NavLink to="/" className="text-decoration-none"><span
+              className="navbar-brand mb-0 h1 text-primary-emphasis fs-2">Calories tracker</span>
+            </NavLink>
           </div>
           <div className="ms-auto">
             <nav className="navbar navbar-nav d-flex flex-row gap-3">
