@@ -1,6 +1,7 @@
 import { IMealForm } from '../../types';
 import { useState } from 'react';
 import axiosApi from '../../axiosApi.ts';
+import { useNavigate } from 'react-router-dom';
 
 
 const initialForm = {
@@ -11,6 +12,7 @@ const initialForm = {
 
 const MealForm = () => {
   const [form, setForm] = useState<IMealForm>({...initialForm});
+  const navigate = useNavigate();
 
 
   const onChangeField = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -27,6 +29,7 @@ const MealForm = () => {
      await axiosApi.post('meal.json', {...form, calories: Number(form.calories)});
 
      setForm({...initialForm});
+     navigate('/');
 
   };
 
