@@ -15,7 +15,7 @@ const MealForm = () => {
   const navigate = useNavigate();
 
 
-  const onChangeField = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const onChangeField = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const {name, value} = e.target;
     setForm(prevState => ({
       ...prevState,
@@ -38,14 +38,19 @@ const MealForm = () => {
       <h3>Add new meal</h3>
       <div className="form-group mb-2">
         <label htmlFor="time">Time of the meal</label>
-        <input
-          type="text"
+        <select
           id="time"
           name="time"
           className="form-control"
           value={form.time}
           onChange={onChangeField}
-        />
+        >
+          <option value="">Select time of the meal</option>
+          <option value="Breakfast">breakfast</option>
+          <option value="Snack">snack</option>
+          <option value="Lunch">lunch</option>
+          <option value="Dinner">dinner</option>
+        </select>
       </div>
 
       <div className="form-group mb-2">
