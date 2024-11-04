@@ -13,7 +13,7 @@ const App = () => (
       <div className="row">
         <Routes>
           <Route path="/newMeal" element={<NewMeal/>}/>
-          <Route path="/editMeal/:id" element={<EditMeal/>}/>
+          <Route path="/editMeal/:idMeal" element={<EditMeal/>}/>
           <Route path="/" element={<Home/>}/>
           <Route path="*" element={<h4>Not found</h4>}/>
         </Routes>

@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import { IMeal, IMealApi } from '../../types';
 import axiosApi from '../../axiosApi.ts';
+import { NavLink } from 'react-router-dom';
 
 
 const Home = () => {
@@ -55,7 +56,9 @@ const Home = () => {
                   <strong>{meal.time}</strong> - {meal.description} ({meal.calories} calories)
                 </div>
                 <div>
-                  <button className="btn btn-sm btn-outline-primary mr-3">Edit</button>
+                  <NavLink to={`/editMeal/${meal.id}`}>
+                    <button className="btn btn-sm btn-outline-primary ">Edit</button>
+                  </NavLink>
                   <button className="btn btn-sm btn-outline-danger m-2" onClick={() => deleteMeal(meal.id)}>Delete</button>
                 </div>
               </li>

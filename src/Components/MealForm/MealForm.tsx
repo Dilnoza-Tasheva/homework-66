@@ -1,7 +1,7 @@
 import { IMealForm } from '../../types';
-import { useState } from 'react';
-import axiosApi from '../../axiosApi.ts';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import * as React from 'react';
 
 
 const initialForm = {
@@ -10,9 +10,25 @@ const initialForm = {
   calories: 0,
 };
 
-const MealForm = () => {
+interface Props {
+  mealToEdit?: IMealForm;
+  submitForm: (meal: IMealForm) => void;
+}
+
+const MealForm: React.FC<Props> = ({mealToEdit, submitForm}) => {
   const [form, setForm] = useState<IMealForm>({...initialForm});
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (mealToEdit) {
+      setForm(prevState => ({
+        ...prevState,
+        ...mealToEdit,
+      }));
+    } else {
+      setForm({...initialForm});
+    }
+  },[mealToEdit]);
 
 
   const onChangeField = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
@@ -26,16 +42,19 @@ const MealForm = () => {
 
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-     await axiosApi.post('meal.json', {...form, calories: Number(form.calories)});
 
-     setForm({...initialForm});
-     navigate('/');
+    submitForm({...form, calories: Number(form.calories)});
 
+    if (!mealToEdit) {
+      setForm({...initialForm});
+      navigate('/');
+    }
   };
 
   return (
     <form onSubmit={onSubmit}>
-      <h3>Add new meal</h3>
+      <h3>{mealToEdit ? 'Edit meal' : 'Add new meal'}</h3>
+      <hr/>
       <div className="form-group mb-2">
         <label htmlFor="time">Time of the meal</label>
         <select
@@ -79,7 +98,7 @@ const MealForm = () => {
       </div>
 
       <button type="submit" className="btn btn-primary">
-        Add meal
+        {mealToEdit ? 'Edit meal' : 'Add meal'}
       </button>
     </form>
   );
