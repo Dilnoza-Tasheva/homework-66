@@ -24,12 +24,22 @@ const Home = () => {
     void fetchData();
   }, [fetchData]);
 
+  const deleteMeal = useCallback(async(mealId: string) => {
+    try {
+      if (window.confirm('Do you want to remove this meal?')) {
+        await axiosApi.delete(`meal/${mealId}.json`);
+        await fetchData();
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  }, [fetchData]);
+
 
   const totalCalories = meals.reduce((acc, meal) => {
     acc += meal.calories;
     return acc;
   }, 0);
-
 
 
   return (
@@ -46,7 +56,7 @@ const Home = () => {
                 </div>
                 <div>
                   <button className="btn btn-sm btn-outline-primary mr-3">Edit</button>
-                  <button className="btn btn-sm btn-outline-danger m-2">Delete</button>
+                  <button className="btn btn-sm btn-outline-danger m-2" onClick={() => deleteMeal(meal.id)}>Delete</button>
                 </div>
               </li>
             ))}
