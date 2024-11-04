@@ -3,6 +3,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { IMeal, IMealForm } from '../../types';
 import { useParams } from 'react-router-dom';
 import axiosApi from '../../axiosApi.ts';
+import { toast } from 'react-toastify';
 
 
 const EditMeal = () => {
@@ -26,6 +27,7 @@ const EditMeal = () => {
     try {
       if (params.idMeal) {
         await axiosApi.put(`meal/${params.idMeal}.json`, {...meal});
+        toast.success('Editing was successful!');
       }
     } catch (error) {
       console.log(error);
